@@ -1,0 +1,614 @@
+# bfdactivity-673628
+-Sure, who will join?
+
+
+# bfdactivity-203407
+- {dialog.date}
+
+
+# bfdactivity-760721
+- {dialog.CreateCalendarEntry_ToTime}
+
+
+# ShowMeetingConfirmCard
+- ```
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "@{if(empty(dialog.createcalendarentry_subject) != true && toLower(dialog.createcalendarentry_subject) != 'skip', dialog.createcalendarentry_subject,'Empty subject')}"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{formatDateTime(dialog.CreateCalendarEntry_FromTime[0].value)} - @{formatDateTime(addSeconds(formatDateTime(dialog.CreateCalendarEntry_FromTime[0].value), int(dialog.CreateCalendarEntry_Duration[0].value)))}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{if(user.ResolvedAttendees != null, join(user.ResolvedAttendees, ', ', ' and '),'No attendee specified')}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{if(empty(dialog.CreateCalendarEntry_Location) != true && toLower(dialog.CreateCalendarEntry_Location) != 'skip', dialog.CreateCalendarEntry_Location,'No location sprcified')}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{if(empty(dialog.CreateCalendarEntry_Content) != true && toLower(dialog.CreateCalendarEntry_Content) != 'skip', dialog.CreateCalendarEntry_Content,'Empty content.')}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+}
+```
+
+
+
+
+# bfdactivity-793355
+- ```
+hahaha
+```
+
+
+
+
+# bfdactivity-928206
+- {turn.adjust}
+
+
+# bfdactivity-432643
+-IF:{@FromTime}
+  - The meeting start time is {@FromTime}.
+-ELSEIF:{@ToTime}
+  - The meeting end time is {@ToTime}.
+-ELSEIF:{@Location}
+  - The meeting location is {@Location}.
+-ELSEIF:{@Subject}
+  - The meeting title is {@Subject}.
+-ELSEIF:{@PersonName}
+  - The meeting attendee is {@PersonName}.
+-ELSE:
+  - No entites founded.
+
+
+# bfdactivity-512634
+- Welcome, this is a calendar bot. You can say something like "create a meeting", "show my meetings".
+
+
+# bfdactivity-874185
+- begin
+
+
+# bfdactivity-933018
+- {dialog.ShowAllMeetingDialog_GraphAll}
+
+# SingleMeeting(x)
+- ```
+{
+    "type": "Container",
+    "items": 
+    [
+        {
+            "type": "ColumnSet",
+            "columns": 
+            [
+                {
+                    "type": "Column",
+                    "style": "emphasis",
+                    "verticalContentAlignment": "Center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "spacing": "Medium",
+                            "size": "Medium",
+                            "weight": "Bolder",
+                            "color": "Dark",
+                            "text": "@{if(x != null, formatDateTime(x.start.dateTime,'HH:mm'), 'N/A')}",
+                            "isSubtle": false
+                        },
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "color": "Dark",
+                            "text": "@{if(x != null, formatDateTime(x.end.dateTime,'HH:mm'), 'N/A')}"
+                        }
+                    ],
+                    "width": 20
+                },
+                {
+                    "type": "Column",
+                    "style": "emphasis",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "spacing": "Medium",
+                            "separator": true,
+                            "size": "Medium",
+                            "weight": "Bolder",
+                            "color": "Dark",
+                            "text": "@{if(x != null, x.subject, 'N/A')}",
+                            "isSubtle": false,
+                            "wrap": true,
+                            "maxLines": 2
+                        },
+                        {
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "color": "Accent",
+                            "text": "@{if(x.location.displayName!= null && empty(x.location.displayName) != true, x.location.displayName,'No Location Specified')}",
+                            "isSubtle": false
+                        }
+                    ],
+                    "width": 80
+                }
+            ]
+        }
+    ]
+}
+```
+
+# stitchMeeting(meetingList, startIndex, endIndex)
+- @{join(foreach(subArray(meetingList, int(startIndex),int(endIndex)), x, SingleMeeting(x)), ', ')}
+
+# stitchedEntryTemplate(meetingList, startIndex, endIndex)
+- ```
+{
+    "type": "AdaptiveCard",
+    "height": "stretch",
+    "backgroundImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKwAAACeCAYAAACvg+F+AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAAhdEVYdENyZWF0aW9uIFRpbWUAMjAxOTowMzoxMyAxOTo0Mjo0OBCBEeIAAAG8SURBVHhe7dJBDQAgEMCwA/+egQcmlrSfGdg6z0DE/oUEw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phSTEsKYYlxbCkGJYUw5JiWFIMS4phCZm52U4FOCAVGHQAAAAASUVORK5CYII=",
+    "body": 
+    [
+        {
+            "type": "Container",
+            "items": 
+            [
+                    @{stitchMeeting(meetingList, startIndex, endIndex)}
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+}
+```
+
+
+# bfdactivity-621773
+[Activity
+    Attachments = {json(stitchedEntryTemplate(dialog.ShowAllMeetingDialog_GraphAll.content.value, user.ShowAllMeetingDialog_pageIndex*3, min(user.ShowAllMeetingDialog_pageIndex*3+3, count(dialog.ShowAllMeetingDialog_GraphAll.content.value))))}
+]
+
+
+# bfdactivity-611720
+- [stitchedEntryTemplate(dialog.ShowAllMeetingDialog_GraphAll.content.value, user.ShowAllMeetingDialog_pageIndex*3, count(dialog.ShowAllMeetingDialog_GraphAll.content.value))]
+
+# AskForShowOverview
+- Would you like to see your calendar overview again? Or you can ask me to read meeting details, accept a meeting or delete a meeting.
+
+
+# ReadOutMorePrompt
+- Do you want to hear the content of the first event? I can read out any event for you, just let me know by providing the subject, time or attendees.
+
+
+# bfdactivity-746153
+- OK, I'll be here.
+
+
+# detailedEntryTemplate(x)
+- ```
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "@{x.subject}"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{x.start.dateTime} - @{x.end.dateTime}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{if(x.attendees[0].emailAddress.address != null && empty(x.attendees[0].emailAddress.address) != true, x.attendees[0].emailAddress.address,'No Attendee Specified')}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{if(empty(x.location.displayName) != true, x.location.displayName,'No Location Specified')}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+}
+```
+
+
+
+
+# bfdactivity-236913
+- show detail flow
+
+
+# bfdactivity-378213
+-{turn.ShowAllMeetingDialog_index}
+
+
+# bfdactivity-244965
+-{dialog.ShowAllMeetingDialog_GraphAll.content.value[turn.ShowAllMeetingDialog_index] }
+
+
+# bfdactivity-592767
+-[ReadOutMorePrompt]
+
+
+# bfdactivity-087699
+[Activity
+    Attachments = {json(detailedEntryTemplate(dialog.ShowAllMeetingDialog_GraphAll.content.value[turn.ShowAllMeetingDialog_index]))}
+]
+
+
+
+
+
+# bfdactivity-735512
+- warning
+
+
+# bfdactivity-322098
+- turn.readDetailChoice is false
+
+
+# bfdactivity-506377
+- This is already the last page!
+
+
+# bfdactivity-991602
+- It is already the first page.
+
+
+# bfdactivity-949580
+-What's the new meeting time?
+
+
+# bfdactivity-903997
+-{dialog.ShowAllMeetingDialog_GraphAll}
+
+
+# bfdactivity-712639
+-{dialog.adaptiveDialogState.actions[0].dialogStack.count}
+
+
+# bfdactivity-777619
+-{dialog.token}
+
+
+# bfdactivity-298446
+-{dialog.token}
+
+
+# bfdactivity-760792
+-{dialog.ShowAllMeetingDialog_GraphAll}
+
+
+# bfdactivity-268745
+- You don't have any meetings.
+
+
+# bfdactivity-632233
+- OK, let me cancel it.
+
+
+# bfdactivity-464903
+- OK, let me cancel it.
+
+
+# bfdactivity-151703
+-{turn.dialogevent.value.intents}
+
+
+# bfdactivity-004330
+-dialog.CreateCalendarEntry_Test
+
+
+# bfdactivity-204555
+-{dialog.CurrentAttendee}
+
+
+# bfdactivity-669815
+-{dialog.AttendeeResults.content.value}
+
+
+# bfdactivity-537115
+-{dialog.AttendeeList}
+
+
+# bfdactivity-386349
+-Find contact {dialog.AttendeeList}
+
+
+# bfdactivity-149606
+-{dialog.options['dialog.AttendeeList']}
+
+
+# bfdactivity-510077
+-{dialog.ResolvedAttendees}
+
+
+# bfdactivity-421764
+-No such attendee!
+
+
+# bfdactivity-542836
+-{dialog.options['dialog.CurrentAttendee']}
+
+
+# bfdactivity-859298
+-'Megan'
+
+
+# bfdactivity-140612
+-'Megan1'
+
+
+# bfdactivity-297887
+-{dialog.AttendeeResults.content.value[0]}
+
+
+# bfdactivity-177699
+-{user.ResolvedAttendee}
+
+
+# bfdprompt-297662
+-{what }
+
+
+# bfdprompt-680650
+-OK, who do you want to join?
+
+
+# bfdprompt-646374
+-Who is the new attendee?
+
+
+# bfdactivity-767144
+-What's the new attendee?
+
+
+# bfdprompt-515322
+-What's the new attendee?
+
+
+# bfdprompt-039846
+-What's the new message body?
+
+
+# bfdprompt-051283
+-What's the new start date?
+
+
+# bfdprompt-350260
+-What's the new start date?
+
+
+# bfdactivity-325858
+-IF:{count(user.ResolvedAttendees)==0}
+  - You don't have any attendee.
+-ELSEIF:{count(user.ResolvedAttendees)==1}
+  - You have {join(user.ResolvedAttendees, ', ', ' and ')} as meeting attendee.
+-ELSE:
+  - You have {join(user.ResolvedAttendees, ', ', ' and ')} as meeting attendees.
+
+
+# bfdprompt-193662
+-Alright, I will send this to {join(user.ResolvedAttendees, ', ', ' and ')}. What is the subject of the event?  You can also say "skip" to skip.
+
+# AskForNewTitle
+-What's the new subject?
+
+# AskForNewAttendee
+-What's the new attendee?
+
+# AskForNewContent
+-What's the new message body?
+
+# AskForNewStartDate
+-What's the new start date?
+
+
+
+
+# bfdprompt-789029
+-[AskForNewContent]
+
+
+# bfdprompt-482672
+-What's the new start date?
+
+
+# bfdprompt-038398
+-What's the new start time?
+
+
+# bfdprompt-305912
+-What's the new end time?
+
+
+# bfdprompt-917550
+-What's the new duration?
+
+
+# bfdprompt-364583
+-What's the new location?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# bfdprompt-055373
+-[ReadOutMorePrompt]
+
+
+
+
+
+
+
+
+
+
+
+
+
+# bfdprompt-634964
+- What's the new subject?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# bfdactivity-995295
+- The new meeting subject {dialog.createcalendarentry_subject} is updated.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# bfdactivity-487311
+- The content is {dialog.CreateCalendarEntry_Content}.
+
+
+# bfdactivity-112156
+- The start date is {dialog.CreateCalendarEntry_FromDate[0].value}
+
+
+# bfdactivity-756966
+- The meeting start time is {dialog.CreateCalendarEntry_StartTime[0].value}.
+
+
+# bfdactivity-691333
+- The meeting end time is {dialog.CreateCalendarEntry_ToTime[0].value}.
+
+
+# bfdactivity-116804
+- The meeting duration is {dialog.CreateCalendarEntry_Duration[0].value}
+
+
+# bfdactivity-977120
+- The meeting location is {dialog.CreateCalendarEntry_Location}
+
+# bfdactivity-371576
+[Activity
+    Attachments = {json(detailedEntryTemplate(dialog.ShowAllMeetingDialog_GraphAll.content.value[turn.ShowAllMeetingDialog_index]))}
+]
+
+# bfdactivity-194820()
+- I’m ready to create the event. The event is on date at time start till time end, with {join(user.ResolvedAttendees, ', ', ' and ')}. The subject of the event is {dialog.createcalendarentry_subject}. The event will take place at {dialog.CreateCalendarEntry_Location}. The message is {dialog.CreateCalendarEntry_Content}. Can you confirm this event?
+# bfdprompt-630773()
+[Activity
+    Attachments = {json(ShowMeetingConfirmCard())}
+]
+# bfdactivity-672715()
+- Okay, I have added the event to your calendar, named {dialog.createcalendarentry_subject}.
+# bfdactivity-824784
+- Hello

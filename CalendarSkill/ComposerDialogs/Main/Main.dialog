@@ -1,0 +1,80 @@
+{
+  "$type": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "id": "761416",
+    "name": "CalendarSkill"
+  },
+  "autoEndDialog": "true",
+  "defaultResultProperty": "dialog.result",
+  "recognizer": "Main.lu",
+  "generator": "common.lg",
+  "triggers": [
+    {
+      "$type": "Microsoft.OnIntent",
+      "$designer": {
+        "name": "CreateMeeting",
+        "id": "860795"
+      },
+      "condition": "#CreateCalendarEntry.score > 0.6",
+      "actions": [
+        {
+          "$type": "Microsoft.BeginDialog",
+          "$designer": {
+            "name": "Begin a Dialog",
+            "id": "187768"
+          },
+          "id": "CreateMeeting",
+          "dialog": "CreateMeeting"
+        }
+      ],
+      "intent": "CreateCalendarEntry"
+    },
+    {
+      "$type": "Microsoft.OnConversationUpdateActivity",
+      "$designer": {
+        "id": "874795",
+        "name": "Welcome"
+      },
+      "condition": "toLower(turn.Activity.membersAdded[0].name) != 'bot'",
+      "actions": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "512634",
+            "name": "Send an Activity"
+          },
+          "activity": "[bfdactivity-512634]"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.OnIntent",
+      "$designer": {
+        "id": "112834",
+        "name": "ShowMeeting"
+      },
+      "condition": "#FindCalendarEntry.score > 0.6",
+      "actions": [
+        {
+          "$type": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "666915",
+            "name": "Set a Property"
+          },
+          "property": "user.ShowAllMeetingDialog_pageIndex",
+          "value": "0"
+        },
+        {
+          "$type": "Microsoft.BeginDialog",
+          "$designer": {
+            "id": "605040",
+            "name": "Begin a Dialog"
+          },
+          "dialog": "ShowMeeting"
+        }
+      ],
+      "intent": "FindCalendarEntry"
+    }
+  ],
+  "$schema": "../../app.schema"
+}

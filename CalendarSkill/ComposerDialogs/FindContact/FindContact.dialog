@@ -1,0 +1,90 @@
+{
+  "$type": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "name": "FindContact",
+    "id": "841379"
+  },
+  "autoEndDialog": "true",
+  "defaultResultProperty": "dialog.result",
+  "triggers": [
+    {
+      "$type": "Microsoft.OnBeginDialog",
+      "$designer": {
+        "name": "BeginDialog"
+      },
+      "actions": [
+        {
+          "$type": "Microsoft.EditArray",
+          "$designer": {
+            "id": "311983",
+            "name": "Edit an Array Property"
+          },
+          "changeType": "Clear",
+          "itemsProperty": "user.ResolvedAttendees"
+        },
+        {
+          "$type": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "678028",
+            "name": "Set a Property"
+          },
+          "property": "dialog.AttendeeList",
+          "value": "dialog.options['dialog.AttendeeList']"
+        },
+        {
+          "$type": "Microsoft.TraceActivity",
+          "$designer": {
+            "id": "098232",
+            "name": "Emit a trace event"
+          },
+          "name": "FindContactDialog",
+          "valueType": "memory",
+          "value": "dialog.AttendeeList"
+        },
+        {
+          "$type": "Microsoft.Foreach",
+          "$designer": {
+            "id": "861689",
+            "name": "Loop: For Each"
+          },
+          "itemsProperty": "dialog.AttendeeList",
+          "indexProperty": "dialog.AttendeeIndex",
+          "valueProperty": "dialog.CurrentAttendee",
+          "actions": [
+            {
+              "$type": "Microsoft.BeginDialog",
+              "$designer": {
+                "id": "906353",
+                "name": "Begin a Dialog"
+              },
+              "dialog": "FindSingleContact",
+              "options": {
+                "dialog.CurrentAttendee": "dialog.foreach.value"
+              },
+              "property": "dialog.ResolvedAttendee"
+            },
+            {
+              "$type": "Microsoft.EditArray",
+              "$designer": {
+                "id": "491758",
+                "name": "Edit an Array Property"
+              },
+              "changeType": "Push",
+              "itemsProperty": "user.ResolvedAttendees",
+              "value": "user.ResolvedAttendee"
+            }
+          ]
+        },
+        {
+          "$type": "Microsoft.EndDialog",
+          "$designer": {
+            "id": "916682",
+            "name": "End Dialog"
+          },
+          "property": "user.ResolvedAttendees"
+        }
+      ]
+    }
+  ],
+  "$schema": "../../BotProject/CSharp/Schemas/app.schema"
+}

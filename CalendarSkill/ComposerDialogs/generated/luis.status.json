@@ -1,0 +1,22 @@
+{
+  "ComposerDialogs/CreateMeeting/CreateMeeting.lu": {
+    "lastUpdateTime": 1,
+    "lastPublishTime": 1574906924113
+  },
+  "ComposerDialogs/FindContact/FindContact.lu": {
+    "lastUpdateTime": 1,
+    "lastPublishTime": 0
+  },
+  "ComposerDialogs/FindSingleContact/FindSingleContact.lu": {
+    "lastUpdateTime": 1,
+    "lastPublishTime": 0
+  },
+  "ComposerDialogs/Main/Main.lu": {
+    "lastUpdateTime": 1,
+    "lastPublishTime": 1574906924113
+  },
+  "ComposerDialogs/ShowMeeting/ShowMeeting.lu": {
+    "lastUpdateTime": 1,
+    "lastPublishTime": 1574906924113
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "$type": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "name": "FindSingleContact",
+    "id": "207459"
+  },
+  "autoEndDialog": "true",
+  "defaultResultProperty": "dialog.result",
+  "triggers": [
+    {
+      "$type": "Microsoft.OnBeginDialog",
+      "$designer": {
+        "name": "BeginDialog"
+      },
+      "actions": [
+        {
+          "$type": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "678028",
+            "name": "Set a Property"
+          },
+          "property": "dialog.CurrentAttendee",
+          "value": "dialog.options['dialog.CurrentAttendee']"
+        },
+        {
+          "$type": "Microsoft.TraceActivity",
+          "$designer": {
+            "id": "802025",
+            "name": "Emit a trace event"
+          },
+          "name": "FindSingleContactDialog",
+          "valueType": "memory",
+          "value": "dialog.CurrentAttendee"
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "$designer": {
+            "id": "668370",
+            "name": "Prompt for text"
+          },
+          "prompt": "Please input an attendee.",
+          "maxTurnCount": 2147483647,
+          "alwaysPrompt": false,
+          "allowInterruptions": "true",
+          "outputFormat": "none",
+          "property": "dialog.CurrentAttendee"
+        },
+        {
+          "$type": "Microsoft.OAuthInput",
+          "$designer": {
+            "id": "792664",
+            "name": "OAuth Login"
+          },
+          "connectionName": "Outlook",
+          "text": "Please log in to your calendar account",
+          "title": "Sign in",
+          "timeout": "900000",
+          "prompt": "Please log in to your calendar account.",
+          "unrecognizedPrompt": "Sorry I don't understand, please login.",
+          "invalidPrompt": "Input invalid. Retry login please.",
+          "maxTurnCount": 3,
+          "alwaysPrompt": false,
+          "allowInterruptions": "true",
+          "tokenProperty": "dialog.token"
+        },
+        {
+          "$type": "Microsoft.HttpRequest",
+          "$designer": {
+            "id": "134230",
+            "name": "HTTP Request"
+          },
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName, '{dialog.CurrentAttendee}') or startswith(givenName,'{dialog.CurrentAttendee}') or startswith(surname,'{dialog.CurrentAttendee}') or startswith(mail,'{dialog.CurrentAttendee}') or startswith(userPrincipalName,'{dialog.CurrentAttendee}')",
+          "headers": {
+            "Authorization": "Bearer {dialog.token.Token}"
+          },
+          "responseType": "Json",
+          "resultProperty": "dialog.AttendeeResults"
+        },
+        {
+          "$type": "Microsoft.IfCondition",
+          "$designer": {
+            "id": "688580",
+            "name": "Branch: If/Else"
+          },
+          "condition": "dialog.AttendeeResults.content.value!=null && count(dialog.AttendeeResults.content.value) > 0",
+          "elseActions": [
+            {
+              "$type": "Microsoft.TextInput",
+              "$designer": {
+                "id": "595605",
+                "name": "Prompt for text"
+              },
+              "prompt": "No such attendee named {dialog.CurrentAttendee}! Please retry input an attendee.",
+              "maxTurnCount": 3,
+              "property": "dialog.NewAttendee",
+              "alwaysPrompt": true,
+              "allowInterruptions": "true",
+              "outputFormat": "none"
+            },
+            {
+              "$type": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "515655",
+                "name": "Set a Property"
+              },
+              "property": "dialog.options['dialog.CurrentAttendee']",
+              "value": "dialog.NewAttendee"
+            },
+            {
+              "$type": "Microsoft.RepeatDialog",
+              "$designer": {
+                "id": "518501",
+                "name": "Repeat this Dialog"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "715194",
+            "name": "Set a Property"
+          },
+          "value": "dialog.AttendeeResults.content.value[0].mail",
+          "property": "user.ResolvedAttendee"
+        },
+        {
+          "$type": "Microsoft.EndDialog",
+          "$designer": {
+            "id": "010353",
+            "name": "End Dialog"
+          },
+          "property": "user.ResolvedAttendee"
+        }
+      ]
+    }
+  ],
+  "$schema": "../../BotProject/CSharp/Schemas/app.schema"
+}
