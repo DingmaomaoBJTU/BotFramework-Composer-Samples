@@ -809,60 +809,6 @@
       "intent": "Cancel"
     },
     {
-      "$type": "Microsoft.OnIntent",
-      "$designer": {
-        "id": "872494"
-      },
-      "condition": "#Interruption.score < 0.1",
-      "actions": [
-        {
-          "$type": "Microsoft.LogAction",
-          "$designer": {
-            "id": "579492",
-            "name": "Log to console"
-          },
-          "text": "Low score interruption",
-          "traceActivity": true
-        },
-        {
-          "$type": "Microsoft.SendActivity",
-          "$designer": {
-            "id": "824784",
-            "name": "Send a response"
-          },
-          "activity": "[bfdactivity-824784]"
-        },
-        {
-          "$type": "Microsoft.SetProperty",
-          "$designer": {
-            "id": "249152",
-            "name": "Set a property"
-          },
-          "property": "turn.processed",
-          "value": "false"
-        }
-      ],
-      "intent": "Interruption"
-    },
-    {
-      "$type": "Microsoft.OnIntent",
-      "$designer": {
-        "id": "921075"
-      },
-      "intent": "None",
-      "actions": [
-        {
-          "$type": "Microsoft.LogAction",
-          "$designer": {
-            "id": "201185",
-            "name": "Log to console"
-          },
-          "text": "None Intent",
-          "traceActivity": true
-        }
-      ]
-    },
-    {
       "$type": "Microsoft.OnCustomEvent",
       "$designer": {
         "id": "535593",
@@ -1005,7 +951,7 @@
                   "value": "Location"
                 },
                 {
-                  "value": "Attendees"
+                  "value": "Attendee"
                 },
                 {
                   "value": "Content"
