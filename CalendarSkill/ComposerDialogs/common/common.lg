@@ -91,20 +91,6 @@ hahaha
 - {turn.adjust}
 
 
-# bfdactivity-432643
--IF:{@FromTime}
-  - The meeting start time is {@FromTime}.
--ELSEIF:{@ToTime}
-  - The meeting end time is {@ToTime}.
--ELSEIF:{@Location}
-  - The meeting location is {@Location}.
--ELSEIF:{@Subject}
-  - The meeting title is {@Subject}.
--ELSEIF:{@PersonName}
-  - The meeting attendee is {@PersonName}.
--ELSE:
-  - No entites founded.
-
 
 # bfdactivity-512634
 - Welcome, this is a calendar bot. You can say something like "create a meeting", "show my meetings".
@@ -453,16 +439,16 @@ hahaha
 
 
 # bfdactivity-325858
--IF:{count(user.ResolvedAttendees)==0}
+-IF: {count(user.ResolvedAttendees)==0}
   - You don't have any attendee.
--ELSEIF:{count(user.ResolvedAttendees)==1}
+-ELSEIF: {count(user.ResolvedAttendees)==1}
   - You have {join(user.ResolvedAttendees, ', ', ' and ')} as meeting attendee.
 -ELSE:
   - You have {join(user.ResolvedAttendees, ', ', ' and ')} as meeting attendees.
 
 
 # bfdprompt-193662
--Alright, I will send this to {join(user.ResolvedAttendees, ', ', ' and ')}. What is the subject of the event?  You can also say "skip" to skip.
+-Alright, I will send this to {join(dialog.ResolvedAttendees, ', ', ' and ')}. What is the subject of the event?  You can also say "skip" to skip.
 
 # AskForNewTitle
 -What's the new subject?
@@ -640,20 +626,20 @@ hahaha
 - The new meeting subject {dialog.createcalendarentry_subject} is updated.
 # bfdprompt-799414()
 -Who is the new attendee?
-# bfdactivity-275833()
--IF:{count(user.ResolvedAttendees)==0}
+# bfdactivity-275833
+-IF:{count(dialog.ResolvedAttendees)==0}
   - You don't have any attendee.
--ELSEIF:{count(user.ResolvedAttendees)==1}
-  - You have {join(user.ResolvedAttendees, ', ', ' and ')} as meeting attendee.
+-ELSEIF:{count(dialog.ResolvedAttendees)==1}
+  - You have {join(dialog.ResolvedAttendees, ', ', ' and ')} as meeting attendee.
 -ELSE:
-  - You have {join(user.ResolvedAttendees, ', ', ' and ')} as meeting attendees.
-# bfdactivity-457135()
--IF:{count(user.ResolvedAttendees)==0}
+  - You have {join(dialog.ResolvedAttendees, ', ', ' and ')} as meeting attendees.
+# bfdactivity-457135
+-IF:{count(dialog.ResolvedAttendees)==0}
   - You don't have any attendee.
--ELSEIF:{count(user.ResolvedAttendees)==1}
-  - You have {join(user.ResolvedAttendees, ', ', ' and ')} as meeting attendee.
+-ELSEIF:{count(dialog.ResolvedAttendees)==1}
+  - You have {join(dialog.ResolvedAttendees, ', ', ' and ')} as meeting attendee.
 -ELSE:
-  - You have {join(user.ResolvedAttendees, ', ', ' and ')} as meeting attendees.
+  - You have {join(dialog.ResolvedAttendees, ', ', ' and ')} as meeting attendees.
 # bfdprompt-551237()
 -[AskForNewContent]
 # bfdactivity-848301()

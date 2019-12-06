@@ -105,6 +105,7 @@
           "options": {
             "dialog.AttendeeList": "dialog.AttendeeList"
           },
+          "resultProperty": "dialog.ResolvedAttendees",
           "property": "dialog.ResolvedAttendeeList"
         },
         {
@@ -418,15 +419,6 @@
             "name": "Send an Activity"
           },
           "activity": "[bfdactivity-464903]"
-        },
-        {
-          "$type": "Microsoft.EditArray",
-          "$designer": {
-            "id": "020344",
-            "name": "Edit an Array Property"
-          },
-          "changeType": "Clear",
-          "itemsProperty": "user.ResolvedAttendees"
         },
         {
           "$type": "Microsoft.EndDialog",
@@ -833,8 +825,8 @@
                     "name": "Edit an Array Property"
                   },
                   "changeType": "Remove",
-                  "itemsProperty": "user.ResolvedAttendees",
-                  "value": "user.ResolvedAttendee"
+                  "itemsProperty": "dialog.ResolvedAttendees",
+                  "value": "dialog.ResolvedAttendee"
                 },
                 {
                   "$type": "Microsoft.SendActivity",
@@ -883,7 +875,8 @@
                       "dialog": "FindSingleContact",
                       "options": {
                         "dialog.CurrentAttendee": "dialog.attendees"
-                      }
+                      },
+                      "resultProperty": "dialog.ResolvedAttendee"
                     },
                     {
                       "$type": "Microsoft.EditArray",
@@ -892,8 +885,8 @@
                         "name": "Edit an Array Property"
                       },
                       "changeType": "Remove",
-                      "itemsProperty": "user.ResolvedAttendees",
-                      "value": "user.ResolvedAttendee"
+                      "itemsProperty": "dialog.ResolvedAttendees",
+                      "value": "dialog.ResolvedAttendee"
                     },
                     {
                       "$type": "Microsoft.EditArray",
@@ -902,8 +895,8 @@
                         "name": "Edit an Array Property"
                       },
                       "changeType": "Push",
-                      "itemsProperty": "user.ResolvedAttendees",
-                      "value": "user.ResolvedAttendee"
+                      "itemsProperty": "dialog.ResolvedAttendees",
+                      "value": "dialog.ResolvedAttendee"
                     },
                     {
                       "$type": "Microsoft.SendActivity",
