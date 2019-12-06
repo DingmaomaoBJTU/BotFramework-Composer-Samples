@@ -1397,6 +1397,22 @@
           ]
         }
       ]
+    },
+    {
+      "$type": "Microsoft.OnCustomEvent",
+      "$designer": {
+        "id": "876900",
+        "name": "AddAttendee"
+      },
+      "event": "AddAttendeeEvent"
+    },
+    {
+      "$type": "Microsoft.OnCustomEvent",
+      "$designer": {
+        "id": "417209",
+        "name": "DeleteAttendee"
+      },
+      "event": "DeleteAttendeeEvent"
     }
   ],
   "$schema": "../../BotProject/CSharp/Schemas/app.schema",
